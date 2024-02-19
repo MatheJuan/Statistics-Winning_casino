@@ -1,8 +1,10 @@
 package com.devlpjruan.statisticswinning.program;
 
+import com.devlpjruan.statisticswinning.entities.Panel;
+
 public class Application {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        Panel panel = new Panel();
     }
 }
