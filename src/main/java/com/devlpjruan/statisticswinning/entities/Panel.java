@@ -17,7 +17,7 @@ import org.jfree.chart.JFreeChart;
 public class Panel extends JFrame {
  
 	private static final long serialVersionUID = 1L;
-	private static final int milisec= 1000;
+	private static final int milisec= 1;
 	private int height=600;
 	private int width=400;
 	

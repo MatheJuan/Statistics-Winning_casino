@@ -18,11 +18,14 @@ public class JChart {
 	Person pessoa = new Person(0, 10000, 50);
 	int qtd = pessoa.getQtdJogadas();
 	int win = pessoa.getVitorias();
-	public static Double cash = 1000.0;
+	
+	public static Double cash = 50.0;
 	double aposta = 0;
 	public static Random random = new Random();
+	public static double luck = 45.0;
+
 	
-//Fazer real-Time
+ 
 // Implementar no MainPanel
 
 	public static XYSeriesCollection createDataSet() {
@@ -34,15 +37,31 @@ public class JChart {
 		return dataset;
 	}
 
+	//Responsavel pela atualização e randomizacao da coordenada Y
 	public static void updateChart(JFreeChart freeChart) {
 		XYSeriesCollection dataset = (XYSeriesCollection) freeChart.getXYPlot().getDataset();
 		XYSeries series = dataset.getSeries(0);
-		 
-		double eixoX= series.getMaxX();
-		double eixoY = series.getMaxY();
-		series.add(eixoX+1, eixoY + random.nextDouble(1)); //generate random data
+		  
+	
+		int item = series.getItemCount();
+		double eixoX = (double) series.getX(item - 1);
+		double eixoY= (double) series.getY(item - 1);
 		
+		double constY= random.nextDouble();
+	
+		if(constY<=(luck/100)) {
+			
+			System.out.println("LevelUP!! "+constY);
+			series.add(eixoX+1, eixoY+1);
+		}
+		else{
+			System.out.println("DownUp!! "+constY);
+			 series.add(eixoX+1, eixoY-1);
+		}
 	}
+	
+	
+	
 
 	public static JFreeChart createJChart() {
 		XYSeriesCollection dataset = createDataSet();
@@ -58,41 +77,19 @@ public class JChart {
 
 		plot.setRenderer(renderer);
 		plot.setBackgroundPaint(Color.WHITE);
-		plot.setForegroundAlpha(0.9f);
+		plot.setForegroundAlpha(1.0f);
 		plot.setRangeGridlinePaint(Color.RED);
 		plot.setDomainGridlinesVisible(true);
 		plot.setDomainGridlinePaint(Color.black);
 		plot.setDomainMinorGridlinesVisible(true);
-
-		plot.getDomainAxis().setRange(0, 100);
-		plot.getRangeAxis().setRange(0, 100);
-
+		
+		plot.getRangeAxis().setRange(1, 400);
+		plot.getDomainAxis().setRange(2, 700);
+		
+		// Centraliza o eixo X no meio do chart.
 		double centerYRange = Math.max(Math.abs(plot.getRangeAxis().getLowerBound()),
 				Math.abs(plot.getRangeAxis().getUpperBound()));
 		plot.getRangeAxis().setRange(-centerYRange, centerYRange);
-
 		return chart;
-
 	}
-
 }
-
-/*
- * for (int i = 0; i < qtd && cash>0; i++) {
- * 
- * x = random.nextInt(2); aposta = random.nextInt((int) cash);
- * 
- * if (x >= 1) { win++; cash += aposta; /*System.out.println("===========");
- * System.out.println("ganhou " + (cash - aposta));
- * System.out.println("===========");
- */
-
-/*
- * } else if (x == 0) { win--; cash -= aposta; }
- */
-/*
- * System.out.println("==========="); System.out.println("perdeu " + (aposta -
- * cash)); System.out.println("===========");
- */
-// series.add(i, win);
-//}
