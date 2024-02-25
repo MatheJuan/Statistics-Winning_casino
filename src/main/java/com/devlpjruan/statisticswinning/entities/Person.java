@@ -1,18 +1,21 @@
 package com.devlpjruan.statisticswinning.entities;
 
+import java.math.BigDecimal;
+
 public class Person {
 
 	private int vitorias;
-	private double dinheiro;
-	private int qtdJogadas;
+	private BigDecimal dinheiro;
+	private int derrotas;
+	private int partidas;
 	
 	public Person() {
 	}
-	public Person(int vitorias, double dinheiro, int qtdJogadas) {
-		super();
+	public Person(int vitorias, String dinheiro, int partidas, int derrotas) {
+		this.derrotas= derrotas;
 		this.vitorias = vitorias;
-		this.dinheiro = dinheiro;
-		this.qtdJogadas = qtdJogadas;
+		this.dinheiro = new BigDecimal(dinheiro);
+		this.partidas = partidas;
 	}
 	
 	public int getVitorias() {
@@ -21,17 +24,29 @@ public class Person {
 	public void setVitorias(int vitorias) {
 		this.vitorias = vitorias;
 	}
-	public double getDinheiro() {
+	public BigDecimal getDinheiro() {
 		return dinheiro;
 	}
-	public void setDinheiro(double dinheiro) {
+	public void setDinheiro(BigDecimal dinheiro) {
 		this.dinheiro = dinheiro;
 	}
-	public int getQtdJogadas() {
-		return qtdJogadas;
+	public int getpartidas() {
+		return partidas;
 	}
-	public void setQtdJogadas(int qtdJogadas) {
-		this.qtdJogadas = qtdJogadas;
+	public void setpartidas(int partidas) {
+		this.partidas = partidas;
+	}
+	public int getDerrotas() {
+		return derrotas;
+	}
+	public void setDerrotas(int derrotas) {
+		this.derrotas = derrotas;
+	}
+	public int getPartidas() {
+		return partidas;
+	}
+	public void setPartidas(int partidas) {
+		this.partidas = partidas;
 	}
 	
 }
