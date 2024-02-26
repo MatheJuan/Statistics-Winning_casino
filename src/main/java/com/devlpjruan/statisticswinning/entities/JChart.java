@@ -17,9 +17,9 @@ public class JChart {
 	public JChart() {
 		createJChart();
 	}
-	 
+	 //Adicionado a var para quantidade de partidas maxima.
 	static Person pessoa = new Person(0, "100.0" , 0, 0);
-	static BigDecimal money = pessoa.getDinheiro().setScale(2);
+	static BigDecimal money = pessoa.getDinheiro();
 	static int partidas = pessoa.getpartidas();
 	static int vitorias = pessoa.getVitorias();
 	static int derrotas = pessoa.getDerrotas();
@@ -66,7 +66,7 @@ public class JChart {
 			partidas++;
 			derrotas++;
 			lucroCassino= lucroCassino.subtract(aposta);
-			System.out.println("Perdeu: -"+aposta);
+			System.out.println("Perdeu: "+aposta);
 			System.out.println("Total de partidas: "+ partidas);
 			System.out.println("Lucro do cassino: "+ lucroCassino);
 			 series.add(eixoX+1, eixoY-1);

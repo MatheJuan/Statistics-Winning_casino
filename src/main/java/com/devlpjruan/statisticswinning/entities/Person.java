@@ -14,7 +14,7 @@ public class Person {
 	public Person(int vitorias, String dinheiro, int partidas, int derrotas) {
 		this.derrotas= derrotas;
 		this.vitorias = vitorias;
-		this.dinheiro = new BigDecimal(dinheiro);
+		this.dinheiro = new BigDecimal(dinheiro).setScale(2);
 		this.partidas = partidas;
 	}
 	
