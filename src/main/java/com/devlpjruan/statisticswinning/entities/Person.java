@@ -28,8 +28,9 @@ public class Person {
 		return dinheiro;
 	}
 	public void setDinheiro(BigDecimal dinheiro) {
-		this.dinheiro = dinheiro;
+		this.dinheiro = this.dinheiro.add(dinheiro);
 	}
+
 	public int getpartidas() {
 		return partidas;
 	}
@@ -48,5 +49,5 @@ public class Person {
 	public void setPartidas(int partidas) {
 		this.partidas = partidas;
 	}
-	
+	 
 }

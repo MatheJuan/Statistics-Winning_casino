@@ -36,8 +36,8 @@ private static final long serialVersionUID = 1L;
 		 SwingUtilities.invokeLater(() ->createGUI(person));
 
 	}
-
-	public JPanel createGUI(Person pessoa) { // createGUI response by Person/ updateChartResponseBYLabelChart
+// ADICIONAR LABEL PARA MONEY E OUTROS
+	public JPanel createGUI(Person pessoa) {  
 		BigDecimal money = pessoa.getDinheiro();
 		int partidas = pessoa.getpartidas();
 		int vitorias = pessoa.getVitorias();
@@ -52,17 +52,19 @@ private static final long serialVersionUID = 1L;
 		panel.setPreferredSize(new Dimension(0, 80));
 		panel.setLayout(new GridLayout(2, 100, 20, 25));
 		panel.setBackground(Color.LIGHT_GRAY);
-
+		
 		JLabel label1 = new JLabel("Vitorias: " + vitorias);
 		JLabel label2 = new JLabel("Derrotas: " + derrotas);
 		JLabel label3 = new JLabel("Partidas: " + partidas);
 		JLabel label4 = new JLabel("Lucro do casino: ");
-
+		JLabel label5 = new JLabel("Dinheiro: " + money);
+		
 		panel.add(label1);
 		panel.add(label2);
 		panel.add(label3);
 		panel.add(label4);
-
+		panel.add(label5);
+		
 		chartPanel.setPreferredSize(new Dimension(800, 400));
 		mainPanel.setBackground(Color.BLACK);
 		mainPanel.setBorder(BorderFactory.createEmptyBorder());
@@ -72,7 +74,7 @@ private static final long serialVersionUID = 1L;
 		Timer timer = new Timer(milisec, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JChart.updateChart(jchart, pessoa, label1, label2, label3, label4);
+				JChart.updateChart(jchart, pessoa, label1, label2, label3, label4, label5);
 			}
 		});
 		timer.start();
