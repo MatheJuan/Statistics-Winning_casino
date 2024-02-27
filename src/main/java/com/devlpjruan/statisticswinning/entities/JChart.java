@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Random;
 
+import javax.swing.JLabel;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.XYPlot;
@@ -17,13 +19,7 @@ public class JChart {
 	public JChart() {
 		createJChart();
 	}
-	 //Adicionado a var para quantidade de partidas maxima.
-	static Person pessoa = new Person(0, "100.0" , 0, 0);
-	static BigDecimal money = pessoa.getDinheiro();
-	static int partidas = pessoa.getpartidas();
-	static int vitorias = pessoa.getVitorias();
-	static int derrotas = pessoa.getDerrotas();
-	 
+  
 	public static double luck = 50.0;
 	public static Random random = new Random();
  
@@ -37,17 +33,18 @@ public class JChart {
 	}
 
 	//Responsavel pela atualização e randomizacao da coordenada Y
-	public static void updateChart(JFreeChart freeChart) {
+	public static void updateChart(JFreeChart freeChart, Person person, JLabel label1, JLabel label2, JLabel label3, JLabel label4) {
+		
 		XYSeriesCollection dataset = (XYSeriesCollection) freeChart.getXYPlot().getDataset();
 		XYSeries series = dataset.getSeries(0);
-	
+		
 		int item = series.getItemCount();
 		double eixoX = (double) series.getX(item - 1);
 		double eixoY= (double) series.getY(item - 1);
 		double constY= random.nextDouble();
 		
 		BigDecimal aposta = BigDecimal.valueOf(random.nextDouble()).setScale(2, RoundingMode.HALF_UP);//xxxxxx
-		BigDecimal lucroCassino= new BigDecimal("1.00");
+		BigDecimal lucroCassino= new BigDecimal("0.00");
 		//aposta.setScale(2);
 		XYPlot plot = freeChart.getXYPlot();
 		double xBound = plot.getDomainAxis().getUpperBound();
@@ -55,20 +52,15 @@ public class JChart {
 		
 		//Define se o grafico irá pra cima ou para baixo.
 		if(constY<=(luck/100)) {
-			partidas++;
-			vitorias++;
+			person.setpartidas(person.getpartidas()+1);
+			person.setVitorias(person.getVitorias()+1);
 			lucroCassino= lucroCassino.add(aposta);
-			System.out.println("Ganhou: "+aposta);
-			System.out.println("Total de partidas: "+ partidas);
-			System.out.println("Lucro do cassino: "+ lucroCassino);
 			series.add(eixoX+1, eixoY+1);
+			
 		}else{
-			partidas++;
-			derrotas++;
+			person.setpartidas(person.getpartidas()+1);
+			person.setDerrotas(person.getDerrotas()+1);
 			lucroCassino= lucroCassino.subtract(aposta);
-			System.out.println("Perdeu: "+aposta);
-			System.out.println("Total de partidas: "+ partidas);
-			System.out.println("Lucro do cassino: "+ lucroCassino);
 			 series.add(eixoX+1, eixoY-1);
 		}
 		//Ajuste dinamico dos eixos apos chegar o limite
@@ -78,8 +70,14 @@ public class JChart {
 		if (eixoX > xBound) {
 		    plot.getDomainAxis().setRange(2, eixoX); 
 		}
+		label1.setText("Vitorias: " + person.getVitorias());
+		label2.setText("Derrotas: "+ person.getDerrotas());
+		label3.setText("Partidas: "+ person.getpartidas());
+		label4.setText("Lucro cassino "+ lucroCassino);
+		
+		
 	}
-	 
+	 	
 	public static JFreeChart createJChart() {
 		XYSeriesCollection dataset = createDataSet();
 
