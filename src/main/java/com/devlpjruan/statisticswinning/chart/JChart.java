@@ -1,4 +1,4 @@
-package com.devlpjruan.statisticswinning.entities;
+package com.devlpjruan.statisticswinning.chart;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -15,14 +15,20 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import com.devlpjruan.statisticswinning.entities.Person;
+import com.devlpjruan.statisticswinning.observer.EditWindowObserver;
+ 
 public class JChart {
+	static Person person;
+	
 	public JChart() {
 		createJChart();
 	}
-  
-	public static double luck = 50.0;
+	 
+	// to do=  Melhorar a variavel de randomizacao de aposta
+	public static double luck = 40.0;
 	public static Random random = new Random();
- 
+
 	public static XYSeriesCollection createDataSet() {
 		XYSeries series = new XYSeries("");
 		series.add(0, 0);
@@ -32,55 +38,58 @@ public class JChart {
 		return dataset;
 	}
 
-	//Responsavel pela atualização e randomizacao da coordenada Y
-	public static void updateChart(JFreeChart freeChart, Person person, JLabel label1, JLabel label2, JLabel label3, JLabel label4, JLabel label5) {
-		
+	// Responsavel pela atualização e randomizacao da coordenada Y
+	public void updateChart(JFreeChart freeChart,Person person, JLabel label1, JLabel label2, JLabel label3, JLabel label4,
+			JLabel label5) {
+
+	 
 		XYSeriesCollection dataset = (XYSeriesCollection) freeChart.getXYPlot().getDataset();
 		XYSeries series = dataset.getSeries(0);
-		
+
 		int item = series.getItemCount();
 		double eixoX = (double) series.getX(item - 1);
-		double eixoY= (double) series.getY(item - 1);
-		double constY= random.nextDouble();
-		
-		BigDecimal aposta = BigDecimal.valueOf(random.nextDouble()).setScale(2, RoundingMode.HALF_UP); 
-		BigDecimal lucroCassino= new BigDecimal("0.00");
-	 
+		double eixoY = (double) series.getY(item - 1);
+		double constY = random.nextDouble();
+
+		BigDecimal aposta = BigDecimal.valueOf(random.nextDouble()).setScale(2, RoundingMode.HALF_UP);
+		BigDecimal lucroCassino = new BigDecimal("0.00");
+
 		XYPlot plot = freeChart.getXYPlot();
 		double xBound = plot.getDomainAxis().getUpperBound();
 		double yBound = plot.getRangeAxis().getUpperBound();
-	 
-		//Define se o grafico irá pra cima ou para baixo.
-		if(constY<=(luck/100)) {//Player ganha
-			person.setpartidas(person.getpartidas()+1);
-			person.setVitorias(person.getVitorias()+1);
-			lucroCassino= lucroCassino.subtract(aposta);
+		
+		// Define se o grafico irá pra cima ou para baixo.
+		if (constY <= (luck / 100)) {// Player ganha
+			person.setpartidas(person.getpartidas() + 1);
+			person.setVitorias(person.getVitorias() + 1);
+			lucroCassino = lucroCassino.subtract(aposta);
 			person.setDinheiro(aposta);
-			System.out.println(person.getDinheiro());
-			series.add(eixoX+1, eixoY+1);
-			
-		}else{//Cassino ganha
-			person.setpartidas(person.getpartidas()+1);
-			person.setDerrotas(person.getDerrotas()+1);
-			lucroCassino= lucroCassino.add(aposta);
-			 series.add(eixoX+1, eixoY-1);
+			// System.out.println(person.getDinheiro());
+			series.add(eixoX + 1, eixoY + 1);
+
+		} else {// Cassino ganha
+			person.setpartidas(person.getpartidas() + 1);
+			person.setDerrotas(person.getDerrotas() + 1);
+			person.setDinheiro(person.getDinheiro().subtract(aposta));
+			lucroCassino = lucroCassino.add(aposta);
+			series.add(eixoX + 1, eixoY - 1);
 		}
-		//Ajuste dinamico dos eixos apos chegar o limite
+		// Ajuste dinamico dos eixos apos chegar o limite
 		if (eixoY > yBound) {
-		    plot.getRangeAxis().setRange(1, eixoY);
+			plot.getRangeAxis().setRange(1, eixoY);
 		}
 		if (eixoX > xBound) {
-		    plot.getDomainAxis().setRange(2, eixoX); 
+			plot.getDomainAxis().setRange(2, eixoX);
 		}
 		label1.setText("Vitorias: " + person.getVitorias());
-		label2.setText("Derrotas: "+ person.getDerrotas());
-		label3.setText("Partidas: "+ person.getpartidas());
-		label4.setText("Lucro cassino "+ lucroCassino);
-		label5.setText("Dinheiro: "+ person.getDinheiro());
-		
+		label2.setText("Derrotas: " + person.getDerrotas());
+		label3.setText("Partidas: " + person.getpartidas());
+		label4.setText("Lucro cassino " + lucroCassino);
+		label5.setText("Dinheiro: " + person.getDinheiro());
+
 	}
-	 	
-	public static JFreeChart createJChart() {
+
+	public JFreeChart createJChart() {
 		XYSeriesCollection dataset = createDataSet();
 
 		JFreeChart chart = ChartFactory.createXYLineChart("Probabilities", "", "", dataset);
@@ -99,16 +108,15 @@ public class JChart {
 		plot.setDomainGridlinesVisible(true);
 		plot.setDomainGridlinePaint(Color.black);
 		plot.setDomainMinorGridlinesVisible(true);
-		
-		 plot.getRangeAxis().setRange(1, 400);
+
+		plot.getRangeAxis().setRange(1, 400);
 		plot.getDomainAxis().setRange(2, 700);
-		
+
 		// Centraliza o eixo no meio do chart.
 		double centerYRange = Math.max(Math.abs(plot.getRangeAxis().getLowerBound()),
 				Math.abs(plot.getRangeAxis().getUpperBound()));
 		plot.getRangeAxis().setRange(-centerYRange, centerYRange);
-		
-		
+
 		return chart;
 	}
 }
