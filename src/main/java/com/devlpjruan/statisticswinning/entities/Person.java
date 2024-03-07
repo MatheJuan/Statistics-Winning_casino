@@ -10,13 +10,17 @@ public class Person {
 	private int derrotas;
 	private int partidas;
 	private int sorte;
+	private BigDecimal lucroCassino;
 
-	public Person() {}
+	public Person() {
+	}
 
-	public Person(String dinheiro, int sorte) {
+	public Person(String dinheiro, int sorte, BigDecimal cassino) {
 		this.dinheiro = new BigDecimal(dinheiro).setScale(2);
+		this.lucroCassino = cassino.setScale(2);
 		this.sorte = sorte;
 	}
+
 	public int getVitorias() {
 		return vitorias;
 	}
@@ -27,12 +31,21 @@ public class Person {
 
 	public BigDecimal getDinheiro() {
 		return dinheiro;
-		
+
 	}
 
 	public void setDinheiro(BigDecimal dinheiro) {
-		 this.dinheiro.add(dinheiro);
-	 
+		this.dinheiro = dinheiro;
+
+	}
+
+	public void addDinheiro(BigDecimal dinheiro) {
+		this.dinheiro = this.dinheiro.add(dinheiro);
+
+	}
+
+	public void subtractDinheiro(BigDecimal dinheiro) {
+		this.dinheiro = this.dinheiro.subtract(dinheiro);
 	}
 
 	public int getpartidas() {
@@ -78,6 +91,14 @@ public class Person {
 		return Objects.hash(derrotas, dinheiro, partidas, sorte, vitorias);
 	}
 
+	public BigDecimal getLucroCassino() {
+		return lucroCassino;
+	}
+
+	public void setLucroCassino(BigDecimal lucroCassino) {
+		this.lucroCassino = lucroCassino;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -90,5 +111,5 @@ public class Person {
 		return derrotas == other.derrotas && Objects.equals(dinheiro, other.dinheiro) && partidas == other.partidas
 				&& sorte == other.sorte && vitorias == other.vitorias;
 	}
-	
+
 }

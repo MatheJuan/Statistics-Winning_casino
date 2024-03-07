@@ -31,7 +31,7 @@ private static final long serialVersionUID = 1L;
 	public static boolean isPaused=true;
 	private EditWindow eWindow = new EditWindow();
 	private Person pessoa1;
-	
+	 
 	@Override
 	public void update(Person person) {
 		 this.pessoa1 = person;
@@ -39,7 +39,6 @@ private static final long serialVersionUID = 1L;
 	
 	  
 	public Panel() {
-	//	this.pessoa = pessoa;
 		setSize(width, height);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(true);
@@ -52,14 +51,14 @@ private static final long serialVersionUID = 1L;
 		 SwingUtilities.invokeLater(() ->createGUI());
 
 	}
-	//to do = generator random nums
-	
 	public JPanel createGUI() {  
 		BigDecimal money = pessoa1.getDinheiro();
 		int partidas = pessoa1.getpartidas();
 		int vitorias = pessoa1.getVitorias();
 		int derrotas = pessoa1.getDerrotas();
 		  
+		BigDecimal saldoCassino = pessoa1.getLucroCassino();
+		
 		JChart jch = new JChart();
 		JFreeChart jchart = jch.createJChart();
 		
@@ -75,7 +74,7 @@ private static final long serialVersionUID = 1L;
 		JLabel label1 = new JLabel("Vitorias: " + vitorias);
 		JLabel label2 = new JLabel("Derrotas: " + derrotas);
 		JLabel label3 = new JLabel("Partidas: " + partidas);
-		JLabel label4 = new JLabel("Lucro do casino: ");
+		JLabel label4 = new JLabel("Lucro do casino: "+ saldoCassino);
 		JLabel label5 = new JLabel("Dinheiro: " + money);
 		
 		
@@ -105,7 +104,7 @@ private static final long serialVersionUID = 1L;
 				    editFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				    editFrame.add(eWindow.EditPerson());
 				    editFrame.pack();
-				    editFrame.setLocationRelativeTo(null); // Alterar o tamanho da janela editwindow
+				    editFrame.setLocationRelativeTo(null);
 				    editFrame.setVisible(true);
 			}
 		});
@@ -137,9 +136,7 @@ private static final long serialVersionUID = 1L;
 			}
 		});
 		timer.start();
-
 		return mainPanel;
-
 	}
 	public void stateExecution(Boolean result) {
 		 isPaused=result;

@@ -2,6 +2,7 @@ package com.devlpjruan.statisticswinning.panel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
@@ -37,11 +38,12 @@ public class EditWindow {
 	public JPanel EditPerson() {
 		JPanel painel = new JPanel();
 		
+		JLabel labelDinheiro = new JLabel("Montante inicial: ");
+		JTextField text1 = new JTextField(7);
+		
 		JLabel labelSorte = new JLabel("Porcentagem de sorte: ");
 		JTextField text2 = new JTextField(2);
 		
-		JLabel labelDinheiro = new JLabel("Montante inicial: ");
-		JTextField text1 = new JTextField(7);
 		
 		JButton confirm = new JButton("Confirmar");
 		
@@ -52,10 +54,11 @@ public class EditWindow {
 				String dinheiro=text1.getText();
 				String textSorte = text2.getText();
 				
+				
 				if(dinheiro!=null && !dinheiro.isEmpty() && textSorte!=null && !textSorte.isEmpty()) {
 				int sorte= Integer.parseInt(textSorte);
-				
-				Person pessoa = new Person(dinheiro, sorte);
+				double value = 0.00;
+				Person pessoa = new Person(dinheiro, sorte, BigDecimal.valueOf(value));
 				notifyObservers(pessoa);
 				
 				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(confirm);
