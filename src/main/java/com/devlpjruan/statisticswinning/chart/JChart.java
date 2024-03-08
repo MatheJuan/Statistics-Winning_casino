@@ -22,8 +22,6 @@ public class JChart {
 		createJChart();
 	}
 
-	
-
 	public static Random random = new Random();
 
 	public static XYSeriesCollection createDataSet() {
@@ -34,7 +32,7 @@ public class JChart {
 		dataset.addSeries(series);
 		return dataset;
 	}
-
+	 
 	// Responsavel pela atualização e randomizacao da coordenada X
 	public void updateChart(JFreeChart freeChart, Person person, JLabel label1, JLabel label2, JLabel label3,
 			JLabel label4, JLabel label5) {
@@ -42,17 +40,18 @@ public class JChart {
 		XYSeriesCollection dataset = (XYSeriesCollection) freeChart.getXYPlot().getDataset();
 		XYSeries series = dataset.getSeries(0);
 
-		BigDecimal aposta = BigDecimal.valueOf(random.nextDouble()).setScale(2, RoundingMode.FLOOR);
 		int item = series.getItemCount();
 		double eixoX = (double) series.getX(item - 1);
 		double eixoY = (double) series.getY(item - 1);
 		double randomVar = random.nextDouble();
 		double luck = person.getSorte();
-
 		XYPlot plot = freeChart.getXYPlot();
 		double xBound = plot.getDomainAxis().getUpperBound();
 		double yBound = plot.getRangeAxis().getUpperBound();
-
+		double maxAposta = person.getDinheiro().doubleValue();
+		
+		BigDecimal aposta = BigDecimal.valueOf(random.nextDouble(maxAposta)).setScale(2, RoundingMode.UP);
+		
 		BigDecimal value = person.getLucroCassino();
 
 		// Define se o grafico irá pra cima ou para baixo.
@@ -62,16 +61,27 @@ public class JChart {
 			person.addDinheiro(aposta);
 			person.setLucroCassino(value.subtract(aposta));
 			series.add(eixoX + 1, eixoY + 1);
-			
+			System.out.println("===============");
+			System.out.println("JOGADOR GANHOU");
+			System.out.println("APOSTA: " + aposta);
+			System.out.println("CASSINO: " + person.getLucroCassino());
+			System.out.println("JOGADOR: " + person.getDinheiro());
+			System.out.println("===============");
 		} else {// Cassino ganha
-		 
+
 			person.setpartidas(person.getpartidas() + 1);
 			person.setDerrotas(person.getDerrotas() + 1);
 			person.subtractDinheiro(aposta);
 			person.setLucroCassino(value.add(aposta));
 			series.add(eixoX + 1, eixoY - 1);
+			System.out.println("===============");
+			System.out.println("JOGADOR PERDEU");
+			System.out.println("APOSTA: " + aposta);
+			System.out.println("CASSINO: " + person.getLucroCassino());
+			System.out.println("JOGADOR: " + person.getDinheiro());
+			System.out.println("===============");
 		}
-		
+
 		// Ajuste dinamico dos eixos apos chegar o limite
 		if (eixoY > yBound) {
 			plot.getRangeAxis().setRange(1, eixoY);
