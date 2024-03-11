@@ -25,7 +25,7 @@ import com.devlpjruan.statisticswinning.observer.EditWindowObserver;
 
 public class Panel extends JFrame implements EditWindowObserver{
 private static final long serialVersionUID = 1L;
-	private final int milisec = 1000;
+	private final int milisec = 80;
 	private int width = 900;
 	private int height = 500;
 	public static boolean isPaused=true;
@@ -103,6 +103,7 @@ private static final long serialVersionUID = 1L;
 				  	editFrame.setSize(80,100);
 				    editFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				    editFrame.add(eWindow.EditPerson());
+				    
 				    editFrame.pack();
 				    editFrame.setLocationRelativeTo(null);
 				    editFrame.setVisible(true);

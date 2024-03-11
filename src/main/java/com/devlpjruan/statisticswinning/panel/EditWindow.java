@@ -1,10 +1,14 @@
 package com.devlpjruan.statisticswinning.panel;
 
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,26 +40,44 @@ public class EditWindow {
 	}
  
 	public JPanel EditPerson() {
-		JPanel painel = new JPanel();
+		JPanel painel = new JPanel(new GridBagLayout());
+		GridBagConstraints gdc = new GridBagConstraints();
 		
-		JLabel labelDinheiro = new JLabel("Montante inicial: ");
-		JTextField text1 = new JTextField(7);
+		gdc.anchor = GridBagConstraints.NORTHWEST; 
+		gdc.gridx=0;
+		gdc.gridy=0;
+		JLabel labelDinheiro = new JLabel("$ inicial: ");
+		painel.add(labelDinheiro, gdc);
 		
-		JLabel labelSorte = new JLabel("Porcentagem de sorte: ");
-		JTextField text2 = new JTextField(2);
+		gdc.gridx=1;
+		gdc.gridy=0;
+		JTextField txtDinheiro = new JTextField(2);
+		painel.add(txtDinheiro, gdc);
 		
+		gdc.gridx=0;
+		gdc.gridy=1;
+		JLabel labelSorte = new JLabel("% sorte: ");
+		painel.add(labelSorte, gdc);
 		
+		gdc.gridx=1;
+		gdc.gridy=1;
+		JTextField txtSorte = new JTextField(2);
+		painel.add(txtSorte, gdc);
+		
+		gdc.gridx=0;
+		gdc.gridy=2;
+		gdc.gridwidth = 2;
 		JButton confirm = new JButton("Confirmar");
+		painel.add(confirm, gdc );
 		
 		confirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {	
 				
-				String dinheiro=text1.getText();
-				String textSorte = text2.getText();
+				String dinheiro=txtDinheiro.getText();
+				String textSorte = txtSorte.getText();
 				
-				
-				if(dinheiro!=null && !dinheiro.isEmpty() && textSorte!=null && !textSorte.isEmpty()) {
+				try {
 				int sorte= Integer.parseInt(textSorte);
 				double value = 0.00;
 				Person pessoa = new Person(dinheiro, sorte, BigDecimal.valueOf(value));
@@ -63,18 +85,16 @@ public class EditWindow {
 				
 				JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(confirm);
 				frame.dispose();
-				}else {
-					JOptionPane.showMessageDialog(null, "Por favor, insira um montante válido.");
+				
+				}catch (NumberFormatException e1) {
+				
+					JOptionPane.showMessageDialog(null, "Por favor, insira valores válidos.");
 				}
 			}
 		});
-		
-		painel.add(labelDinheiro);
-		painel.add(text1);
-		painel.add(labelSorte);
-		painel.add(text2);
-		painel.add(confirm);
-		
+		painel.setPreferredSize(new Dimension(120,100));;
+	
+
 		return painel;
 	}
  }
