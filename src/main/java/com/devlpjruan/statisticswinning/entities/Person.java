@@ -11,14 +11,16 @@ public class Person {
 	private int partidas;
 	private int sorte;
 	private BigDecimal lucroCassino;
-
+	private BigDecimal aposta;
+	
 	public Person() {
 	}
 
-	public Person(String dinheiro, int sorte, BigDecimal cassino) {
+	public Person(String dinheiro, int sorte, double cassino, int aposta) {
 		this.dinheiro = new BigDecimal(dinheiro).setScale(2);
-		this.lucroCassino = cassino.setScale(2);
+		this.lucroCassino = new BigDecimal(cassino).setScale(2);
 		this.sorte = sorte;
+		this.aposta = new BigDecimal(aposta);
 	}
 
 	public int getVitorias() {
@@ -79,6 +81,21 @@ public class Person {
 	public void setSorte(int sorte) {
 		this.sorte = sorte;
 	}
+	public BigDecimal getAposta() {
+		return aposta;
+	}
+
+	public void setAposta(BigDecimal aposta) {
+		this.aposta = aposta;
+	}
+
+	public BigDecimal getLucroCassino() {
+		return lucroCassino;
+	}
+
+	public void setLucroCassino(BigDecimal lucroCassino) {
+		this.lucroCassino = lucroCassino;
+	}
 
 	@Override
 	public String toString() {
@@ -89,14 +106,6 @@ public class Person {
 	@Override
 	public int hashCode() {
 		return Objects.hash(derrotas, dinheiro, partidas, sorte, vitorias);
-	}
-
-	public BigDecimal getLucroCassino() {
-		return lucroCassino;
-	}
-
-	public void setLucroCassino(BigDecimal lucroCassino) {
-		this.lucroCassino = lucroCassino;
 	}
 
 	@Override

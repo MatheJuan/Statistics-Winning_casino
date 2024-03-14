@@ -35,7 +35,7 @@ public class JChart {
 
 	// Responsavel pela atualização e randomizacao da coordenada X
 	public void updateChart(JFreeChart freeChart, Person person, JLabel label1, JLabel label2, JLabel label3,
-			JLabel label4, JLabel label5) {
+			JLabel label4, JLabel label5,JLabel label6) {
 
 		XYSeriesCollection dataset = (XYSeriesCollection) freeChart.getXYPlot().getDataset();
 		XYSeries series = dataset.getSeries(0);
@@ -49,24 +49,24 @@ public class JChart {
 		double xBound = plot.getDomainAxis().getUpperBound();
 		double yBound = plot.getRangeAxis().getUpperBound();
 		double saldoPlayer = person.getDinheiro().doubleValue();
-												
-		double margemSegurança = Math.max(2.00, saldoPlayer);
+		BigDecimal aposta = person.getAposta();								 
+		double margemSegurança = Math.max(2.00, saldoPlayer/2);
 		
 		if(margemSegurança<2.00) {
-			margemSegurança=5.00;
+			margemSegurança=3.00;
 		}										
-		
-		BigDecimal aposta = BigDecimal.valueOf(random.nextDouble()*margemSegurança ).setScale(2, RoundingMode.UP);
+		if(aposta.intValue()==0 ) {
+			aposta = BigDecimal.valueOf(random.nextDouble()*margemSegurança).setScale(2, RoundingMode.UP);
+		}
 		
 		BigDecimal saldoCassino = person.getLucroCassino();
-		
 		// Define se o grafico irá pra cima ou para baixo.
 		if (randomVar <= (luck / 100)) { // Player ganha
 			person.setpartidas(person.getpartidas() + 1);
 			person.setVitorias(person.getVitorias() + 1);
 			person.addDinheiro(aposta);
 			person.setLucroCassino(saldoCassino.subtract(aposta));
-			series.add(eixoX + 1, eixoY + 1);
+			series.add(eixoX + 1, eixoY + 3);
 			
 	
 		} else {// Cassino ganha
@@ -75,7 +75,7 @@ public class JChart {
 			person.setDerrotas(person.getDerrotas() + 1);
 			person.subtractDinheiro(aposta);
 			person.setLucroCassino(saldoCassino.add(aposta));
-			series.add(eixoX + 1, eixoY - 1);
+			series.add(eixoX + 1, eixoY - 3);
 		
 		}
 
@@ -91,6 +91,7 @@ public class JChart {
 		label3.setText("Partidas: " + person.getpartidas());
 		label4.setText("Lucro cassino " + person.getLucroCassino());
 		label5.setText("Dinheiro: " + person.getDinheiro());
+		label6.setText("Sorte: "+ person.getSorte());
 	}
 
 	public JFreeChart createJChart() {
@@ -114,7 +115,7 @@ public class JChart {
 		plot.setDomainMinorGridlinesVisible(true);
 
 		plot.getRangeAxis().setRange(1, 400);
-		plot.getDomainAxis().setRange(2, 700);
+		plot.getDomainAxis().setRange(2, 600);
 
 		// Centraliza o eixo no meio do chart.
 		double centerYRange = Math.max(Math.abs(plot.getRangeAxis().getLowerBound()),
