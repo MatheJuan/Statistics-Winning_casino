@@ -49,8 +49,9 @@ public class JChart {
 		double xBound = plot.getDomainAxis().getUpperBound();
 		double yBound = plot.getRangeAxis().getUpperBound();
 		double saldoPlayer = person.getDinheiro().doubleValue();
-		BigDecimal aposta = person.getAposta();								 
-		double margemSegurança = Math.max(2.00, saldoPlayer/2);
+		BigDecimal aposta = person.getAposta();	
+		//							10/4= 2,5
+		double margemSegurança = saldoPlayer/4;
 		
 		if(margemSegurança<2.00) {
 			margemSegurança=3.00;
@@ -111,7 +112,7 @@ public class JChart {
 		plot.setForegroundAlpha(1.0f);
 		plot.setRangeGridlinePaint(Color.RED);
 		plot.setDomainGridlinesVisible(true);
-		plot.setDomainGridlinePaint(Color.black);
+		plot.setDomainGridlinePaint(Color.black);//
 		plot.setDomainMinorGridlinesVisible(true);
 
 		plot.getRangeAxis().setRange(1, 400);
