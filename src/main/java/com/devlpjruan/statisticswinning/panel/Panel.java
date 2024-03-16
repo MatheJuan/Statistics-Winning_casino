@@ -40,6 +40,7 @@ public class Panel extends JFrame implements EditWindowObserver {
 	public Panel() {
 		setSize(width, height);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBackground(Color.RED);
 		setResizable(true);
 		pessoa1 = new Person();
 		eWindow.addObserver(this);
@@ -80,14 +81,18 @@ public class Panel extends JFrame implements EditWindowObserver {
 		JLabel label6 = new JLabel("Sorte: " + sorte);
 
 		JButton startButtom = new JButton("START");
+		JButton stopButtom = new JButton("STOP");
+		JButton editButton = new JButton("EDIT");
+		
 		startButtom.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				editButton.setEnabled(false);;
 				stateExecution(false);
 			}
 		});
 
-		JButton stopButtom = new JButton("STOP");
+		
 		stopButtom.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -95,7 +100,7 @@ public class Panel extends JFrame implements EditWindowObserver {
 
 			}
 		});
-		JButton editButton = new JButton("EDIT");
+		
 		editButton.addActionListener(new ActionListener() {
 
 			@Override

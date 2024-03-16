@@ -4,16 +4,21 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.temporal.ValueRange;
 import java.util.Random;
 
 import javax.swing.JLabel;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+
 import com.devlpjruan.statisticswinning.entities.Person;
 
 public class JChart {
@@ -50,25 +55,29 @@ public class JChart {
 		double yBound = plot.getRangeAxis().getUpperBound();
 		double saldoPlayer = person.getDinheiro().doubleValue();
 		BigDecimal aposta = person.getAposta();	
-		//							10/4= 2,5
-		double margemSegurança = saldoPlayer/4;
+	 
+		//double margemSegurança = saldoPlayer;
 		
-		if(margemSegurança<2.00) {
-			margemSegurança=3.00;
-		}										
-		if(aposta.intValue()==0 ) {
-			aposta = BigDecimal.valueOf(random.nextDouble()*margemSegurança).setScale(2, RoundingMode.UP);
+		//Converte o numero da  para positivo se saldoPlayer for negativo. 
+		if(saldoPlayer<0.00) {
+			saldoPlayer= -(-saldoPlayer);
+		}	
+		
+		//Check da classe EditWindow caso aposta seja Random.
+		if(aposta.intValue()<=0 ) {
+			aposta = BigDecimal.valueOf(random.nextDouble()*saldoPlayer).setScale(2, RoundingMode.UP);
 		}
 		
 		BigDecimal saldoCassino = person.getLucroCassino();
+		
 		// Define se o grafico irá pra cima ou para baixo.
-		if (randomVar <= (luck / 100)) { // Player ganha
+		if (randomVar <= (luck / 100)) { 
+			// Player ganha
 			person.setpartidas(person.getpartidas() + 1);
 			person.setVitorias(person.getVitorias() + 1);
 			person.addDinheiro(aposta);
 			person.setLucroCassino(saldoCassino.subtract(aposta));
 			series.add(eixoX + 1, eixoY + 3);
-			
 	
 		} else {// Cassino ganha
 
@@ -80,7 +89,7 @@ public class JChart {
 		
 		}
 
-		// Ajuste dinamico dos eixos apos chegar o limite
+		// Ajuste dinamico dos eixos apos chegar na borda do chart
 		if (eixoY > yBound) {
 			plot.getRangeAxis().setRange(1, eixoY);
 		}
@@ -97,27 +106,30 @@ public class JChart {
 
 	public JFreeChart createJChart() {
 		XYSeriesCollection dataset = createDataSet();
-
-		JFreeChart chart = ChartFactory.createXYLineChart("Probabilities", "", "", dataset);
-
+		JFreeChart chart = ChartFactory.createXYLineChart("Casino Probabilities", "", "", dataset);
 		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-
+		Color backGround = new Color(221,227,233);
+		
 		renderer.setSeriesPaint(0, Color.RED);
 		renderer.setSeriesStroke(0, new BasicStroke(1.0f));
 		renderer.setSeriesShapesVisible(0, false);
 		XYPlot plot = chart.getXYPlot();
-
+		chart.setBackgroundPaint(backGround);
 		plot.setRenderer(renderer);
-		plot.setBackgroundPaint(Color.WHITE);
+		plot.setBackgroundPaint(Color.BLACK);
 		plot.setForegroundAlpha(1.0f);
-		plot.setRangeGridlinePaint(Color.RED);
-		plot.setDomainGridlinesVisible(true);
-		plot.setDomainGridlinePaint(Color.black);//
-		plot.setDomainMinorGridlinesVisible(true);
-
+		plot.setDomainMinorGridlinesVisible(false);
+		plot.setDomainGridlinesVisible(false);
+		plot.setRangeGridlinesVisible(false);
 		plot.getRangeAxis().setRange(1, 400);
 		plot.getDomainAxis().setRange(2, 600);
-
+		
+		 ValueAxis yAxis = plot.getRangeAxis();
+	        yAxis.setTickLabelsVisible(false);
+		
+        ValueAxis xAxis = plot.getDomainAxis();
+        xAxis.setTickLabelsVisible(false);
+        
 		// Centraliza o eixo no meio do chart.
 		double centerYRange = Math.max(Math.abs(plot.getRangeAxis().getLowerBound()),
 				Math.abs(plot.getRangeAxis().getUpperBound()));
