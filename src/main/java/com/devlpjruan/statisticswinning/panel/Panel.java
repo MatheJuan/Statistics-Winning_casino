@@ -28,7 +28,7 @@ public class Panel extends JFrame implements EditWindowObserver {
 	private final int milisec = 80;
 	private int width = 900;
 	private int height = 500;
-	public static boolean isPaused = true;
+	public boolean isPaused = true;
 	private EditWindow eWindow = new EditWindow();
 	private Person pessoa1;
 
@@ -54,16 +54,14 @@ public class Panel extends JFrame implements EditWindowObserver {
 
 	public JPanel createGUI() {
 		BigDecimal money = pessoa1.getDinheiro();
-		int partidas = pessoa1.getpartidas();
+		BigDecimal saldoCassino = pessoa1.getLucroCassino();
+		int partidas = pessoa1.getPartidas();
 		int vitorias = pessoa1.getVitorias();
 		int derrotas = pessoa1.getDerrotas();
 		int sorte = pessoa1.getSorte();
 
-		BigDecimal saldoCassino = pessoa1.getLucroCassino();
-
 		JChart jch = new JChart();
-		JFreeChart jchart = jch.createJChart();
-
+		JFreeChart jchart = JChart.createJChart();
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		ChartPanel chartPanel = new ChartPanel(jchart);
 		JPanel panel = new JPanel();
@@ -80,59 +78,6 @@ public class Panel extends JFrame implements EditWindowObserver {
 		JLabel label5 = new JLabel("Dinheiro: " + money);
 		JLabel label6 = new JLabel("Sorte: " + sorte);
 
-		JButton startButtom = new JButton("START");
-		JButton stopButtom = new JButton("STOP");
-		JButton editButton = new JButton("EDIT");
-		
-		startButtom.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				editButton.setEnabled(false);;
-				stateExecution(false);
-			}
-		});
-
-		
-		stopButtom.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				stateExecution(true);
-
-			}
-		});
-		
-		editButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFrame editFrame = new JFrame();
-				editFrame.setSize(80, 100);
-				editFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-				editFrame.add(eWindow.EditPerson());
-
-				editFrame.pack();
-				editFrame.setLocationRelativeTo(null);
-				editFrame.setVisible(true);
-			}
-		});
-
-		controlPanel.add(startButtom);
-		controlPanel.add(stopButtom);
-		controlPanel.add(editButton);
-
-		panel.add(label1);
-		panel.add(label2);
-		panel.add(label3);
-		panel.add(label4);
-		panel.add(label5);
-		panel.add(label6);
-		chartPanel.setPreferredSize(new Dimension(800, 400));
-		mainPanel.setBackground(Color.BLACK);
-		mainPanel.setBorder(BorderFactory.createEmptyBorder());
-		mainPanel.add(chartPanel, BorderLayout.NORTH);
-		mainPanel.add(controlPanel, BorderLayout.CENTER);
-		mainPanel.add(panel, BorderLayout.SOUTH);
-
 		Timer timer = new Timer(milisec, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -143,11 +88,101 @@ public class Panel extends JFrame implements EditWindowObserver {
 			}
 		});
 		timer.start();
+
+		JButton startButton = new JButton("START");
+		JButton stopButton = new JButton("STOP");
+		JButton editButton = new JButton("EDIT");
+
+		startButton.setEnabled(false);
+		stopButton.setEnabled(false);
+
+		startButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editButton.setText("NEW");
+				startButton.setText("RESUME");
+
+				stateExecution(false);
+				startButton.setEnabled(false);
+			}
+		});
+
+		stopButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				stateExecution(true);
+				startButton.setEnabled(true);
+			}
+		});
+
+		editButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFrame editFrame = new JFrame();
+				editFrame.setSize(80, 100);
+				editFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				editFrame.add(eWindow.EditPerson());
+				editFrame.pack();
+				editFrame.setLocationRelativeTo(null);
+				editFrame.setVisible(true);
+				startButton.setEnabled(true);
+				stopButton.setEnabled(true);
+				stopButton.doClick();
+				if (editButton.getText().equals("NEW")) {
+					
+					JFreeChart newChart= newData();
+					chartPanel.setChart(newChart);
+					startButton.setText("START");
+					timer.stop();
+					Timer newTimer = new Timer(milisec, new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							if (!isPaused) {
+								jch.updateChart(newChart, pessoa1, label1, label2, label3, label4, label5, label6);
+
+							}
+						}
+					});
+					newTimer.start();
+				}
+			}
+		});
+		
+		controlPanel.add(startButton);
+		controlPanel.add(stopButton);
+		controlPanel.add(editButton);
+
+		panel.add(label1);
+		panel.add(label2);
+		panel.add(label3);
+		panel.add(label4);
+		panel.add(label5);
+		panel.add(label6);
+
+		chartPanel.setPreferredSize(new Dimension(800, 400));
+		mainPanel.setBackground(Color.BLACK);
+		mainPanel.setBorder(BorderFactory.createEmptyBorder());
+		mainPanel.add(chartPanel, BorderLayout.NORTH);
+		mainPanel.add(controlPanel, BorderLayout.CENTER);
+		mainPanel.add(panel, BorderLayout.SOUTH);
+
 		return mainPanel;
+	}
+
+	public static JFreeChart newData() {
+		Person person = new Person();
+
+		new JLabel("Vitorias: " + person.getVitorias());
+		new JLabel("Derrotas: " + person.getDerrotas());
+		new JLabel("Partidas: " + person.getPartidas());
+		new JLabel("Lucro do casino: " + person.getLucroCassino());
+		new JLabel("Dinheiro: " + person.getDinheiro());
+		new JLabel("Sorte: " + person.getSorte());
+		JFreeChart jchartt = JChart.createJChart();
+		return jchartt;
 	}
 
 	public void stateExecution(Boolean result) {
 		isPaused = result;
 	}
-
 }

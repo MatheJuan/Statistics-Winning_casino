@@ -50,13 +50,6 @@ public class Person {
 		this.dinheiro = this.dinheiro.subtract(dinheiro);
 	}
 
-	public int getpartidas() {
-		return partidas;
-	}
-
-	public void setpartidas(int partidas) {
-		this.partidas = partidas;
-	}
 
 	public int getDerrotas() {
 		return derrotas;

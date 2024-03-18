@@ -5,6 +5,7 @@ import com.devlpjruan.statisticswinning.panel.Panel;
 public class Application {
 
     public static void main(String[] args) {
-    	Panel painel = new Panel();
+    	@SuppressWarnings("unused")
+		Panel painel = new Panel();
     }
 }
