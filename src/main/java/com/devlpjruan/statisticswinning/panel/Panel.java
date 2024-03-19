@@ -108,7 +108,7 @@ public class Panel extends JFrame implements EditWindowObserver {
 					startButton.setEnabled(false);
 					stopButton.setEnabled(true);
 					}else {
-						JOptionPane.showMessageDialog(null, "Valores nulos não podem começar!! :(");
+						JOptionPane.showMessageDialog(null, "Valores nulos não podem ser executados!! :(");
 					}
 				}
 			});
