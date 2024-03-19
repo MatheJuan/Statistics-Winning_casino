@@ -21,7 +21,8 @@ import com.devlpjruan.statisticswinning.entities.Person;
 import com.devlpjruan.statisticswinning.observer.EditWindowObserver;
 
 public class EditWindow {
-
+	public boolean isConfirmed=false;
+	
 	public EditWindow() {
 	}
 
@@ -41,7 +42,7 @@ public class EditWindow {
 		}
 	}
 
-	public JPanel EditPerson() {
+	public JPanel createEditPerson() {
 		JPanel painel = new JPanel(new GridBagLayout());
 		GridBagConstraints gdc = new GridBagConstraints();
 
@@ -84,6 +85,7 @@ public class EditWindow {
 		gdc.gridx = 0;
 		gdc.gridy = 4;
 		gdc.anchor = GridBagConstraints.CENTER;
+		
 		JButton confirm = new JButton("Confirmar");
 		painel.add(confirm, gdc);
 
@@ -105,25 +107,28 @@ public class EditWindow {
 					String dinheiro = txtDinheiro.getText();
 					String fieldSorte= txtSorte.getText();
 					String fieldAposta=txtAposta.getText();
-					
 					int sorte = Integer.parseInt(fieldSorte);
 					int aposta = Integer.parseInt(fieldAposta);
-					
 					double cassino = 0.00;
+					isConfirmed=true;
 					
 					Person pessoa = new Person(dinheiro, sorte, cassino, aposta);
-					notifyObservers(pessoa);
-
+					
 					JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(confirm);
 					frame.dispose();
-
+					
+					notifyObservers(pessoa);
+					
 				} catch (NumberFormatException ex) {
 					JOptionPane.showMessageDialog(null, "Por favor, insira valores válidos.");
 				}
 			}
 		});
 		painel.setPreferredSize(new Dimension(150, 160));
-
+		
 		return painel;
 	}
+ public Boolean confirmedEdit() {
+	 return isConfirmed;
+ }
 }
