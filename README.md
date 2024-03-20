@@ -1,7 +1,7 @@
 # Simulador de Cassino - Lei dos Grandes Números
 
 Este é um simulador de cassino baseado na Lei dos Grandes Números (LLN), onde a média das apostas converge para um valor esperado à medida que o número de rodadas aumenta.
-O programa mostra estatísticas como o saldo final do apostador, o número de rodadas jogadas e a média das apostas.
+O programa mostra estatísticas como o saldo final do apostador, o número de rodadas jogadas e a média das apostas. Desenvolvido com a biblioteca JFreeChart e implementado o Padrão Observer.
 
 ## Funcionalidades
 * Escolher o saldo inicial do apostador.
