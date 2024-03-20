@@ -11,8 +11,12 @@ import javax.swing.JLabel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.CategoryMarker;
+import org.jfree.chart.plot.Marker;
+import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.ui.Layer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -23,6 +27,7 @@ public class JChart {
 	public JChart() {
 		createJChart();
 	}
+
 	public static Random random = new Random();
 
 	public static XYSeriesCollection createDataSet() {
@@ -121,16 +126,21 @@ public class JChart {
 		plot.getRangeAxis().setRange(1, 400);
 		plot.getDomainAxis().setRange(2, 600);
 
+		
 		ValueAxis yAxis = plot.getRangeAxis();
-		yAxis.setTickLabelsVisible(false);
-
+		yAxis.setTickLabelsVisible(true);
 		ValueAxis xAxis = plot.getDomainAxis();
-		xAxis.setTickLabelsVisible(false);
-
+		xAxis.setTickLabelsVisible(true);
+	
 		// Centraliza o eixo no meio do chart.
 		double centerYRange = Math.max(Math.abs(plot.getRangeAxis().getLowerBound()),
 				Math.abs(plot.getRangeAxis().getUpperBound()));
 		plot.getRangeAxis().setRange(-centerYRange, centerYRange);
+		
+		 // Adicionar uma linha horizontal no meio do gráfico
+        Marker middleLine = new ValueMarker(0.0); 
+        middleLine.setPaint(Color.LIGHT_GRAY);
+        plot.addRangeMarker(middleLine); 
 
 		return chart;
 	}
