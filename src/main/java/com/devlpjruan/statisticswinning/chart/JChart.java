@@ -128,9 +128,9 @@ public class JChart {
 
 		
 		ValueAxis yAxis = plot.getRangeAxis();
-		yAxis.setTickLabelsVisible(true);
+		yAxis.setTickLabelsVisible(false);
 		ValueAxis xAxis = plot.getDomainAxis();
-		xAxis.setTickLabelsVisible(true);
+		xAxis.setTickLabelsVisible(false);
 	
 		// Centraliza o eixo no meio do chart.
 		double centerYRange = Math.max(Math.abs(plot.getRangeAxis().getLowerBound()),
