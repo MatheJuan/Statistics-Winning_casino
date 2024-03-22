@@ -8,7 +8,9 @@ O programa mostra estatísticas como o saldo final do apostador, o número de ro
 * Definir sua "sorte", que influencia as probabilidades de ganhar ou perder em cada rodada.
 * Definir a quantidade de dinheiro a ser apostada em cada rodada.
 * A opção de aposta "Random" permite ao usuário simular rodadas aleatórias de apostas.
-  
+
+![gif](https://github.com/MatheJuan/assets/blob/main/SWProgram.gif)
+ 
 ## Pré-requisitos 
 Antes de começar, certifique-se de ter os seguintes requisitos instalados em seu sistema:
 - Java versão 17++
